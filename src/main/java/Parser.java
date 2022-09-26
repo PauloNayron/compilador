@@ -11,7 +11,8 @@ public class Parser {
 
     public void parse () {
 //        expr();
-        letStatement();
+//        letStatement();
+        statements();
     }
 
     private void nextToken () {
@@ -21,7 +22,9 @@ public class Parser {
     private void match(TokenType t) {
         if (currentToken.type == t) {
             nextToken();
-        }else {
+        } else if (t == TokenType.NUMBER && currentToken.type == TokenType.IDENT) {
+            nextToken();
+        } else {
             throw new Error("syntax error");
         }
     }
@@ -69,6 +72,29 @@ public class Parser {
         expr();
         System.out.println("pop "+id);
         match(TokenType.SEMICOLON);
+    }
+
+    void printStatement () {
+        match(TokenType.PRINT);
+        expr();
+        System.out.println("print");
+        match(TokenType.SEMICOLON);
+    }
+
+    void statement () {
+        if (currentToken.type == TokenType.PRINT) {
+            printStatement();
+        } else if (currentToken.type == TokenType.LET) {
+            letStatement();
+        } else {
+            throw new Error("syntax error");
+        }
+    }
+
+    void statements () {
+        while (currentToken.type != TokenType.EOF) {
+            statement();
+        }
     }
 
 }

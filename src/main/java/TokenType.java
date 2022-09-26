@@ -4,7 +4,7 @@ public enum TokenType {
     // Literals.
     NUMBER, IDENT,
 
-    LET,
+    LET, PRINT,
 
     EOF
 }
